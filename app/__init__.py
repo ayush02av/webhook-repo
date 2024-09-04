@@ -2,7 +2,6 @@ from flask import Flask
 
 from app.webhook.routes import webhook
 
-
 # Creating our flask app
 def create_app():
 
