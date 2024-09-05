@@ -43,8 +43,8 @@ def get_pull_action_object():
         "request_id": request_json['pull_request']['id'],
         "author": request_json['pull_request']['user']['login'],
         "action": "PULL_REQUEST",
-        "from_branch": request_json['head']['label'].split(':')[-1],
-        "to_branch": request_json['base']['label'].split(':')[-1],
+        "from_branch": request_json['pull_request']['head']['label'].split(':')[-1],
+        "to_branch": request_json['pull_request']['base']['label'].split(':')[-1],
         "timestamp": request_json['pull_request']['created_at']
     }
     return object
@@ -55,8 +55,8 @@ def get_merge_action_object():
         "request_id": request_json['pull_request']['id'],
         "author": request_json['pull_request']['merged_by']['login'],
         "action": "MERGE",
-        "from_branch": request_json['head']['label'].split(':')[-1],
-        "to_branch": request_json['base']['label'].split(':')[-1],
+        "from_branch": request_json['pull_request']['head']['label'].split(':')[-1],
+        "to_branch": request_json['pull_request']['base']['label'].split(':')[-1],
         "timestamp": request_json['pull_request']['merged_at']
     }
     return object
