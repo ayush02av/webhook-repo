@@ -39,7 +39,7 @@ def get_action_object():
     elif event == "merge":
         object = get_merge_action_object()
     
-    else:
-        raise Exception("Invalid event")
+    # else:
+    #     raise Exception("Invalid event")
 
     return object
