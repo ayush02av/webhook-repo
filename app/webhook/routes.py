@@ -11,6 +11,7 @@ def ping():
 
 @webhook.route('/receiver', methods=["POST"])
 def receiver():
+    print(request)
     request_json = request.get_json()
     mongo.db.webhooks.insert_one(request_json)
     return {}, 200
