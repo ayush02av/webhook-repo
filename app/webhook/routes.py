@@ -1,5 +1,6 @@
 from flask import Blueprint, json, request
 from ..extensions import mongo
+from ..utility import get_action_object
 
 webhook = Blueprint('Webhook', __name__, url_prefix='/webhook')
 
@@ -11,9 +12,6 @@ def ping():
 
 @webhook.route('/receiver', methods=["POST"])
 def receiver():
-    event_type = request.headers.get('X-GitHub-Event')
-    print(event_type)
-    
-    request_json = request.get_json()
-    mongo.db.webhooks.insert_one(request_json)
+    action_object = get_action_object()
+    mongo.db.action.insert_one(action_object)
     return {}, 200
