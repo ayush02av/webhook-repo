@@ -40,7 +40,7 @@ def get_push_action_object():
 def get_pull_action_object():
     request_json = request.get_json()
     object = {
-        "request_id": request_json['id'],
+        "request_id": request_json['pull_request']['id'],
         "author": request_json['pull_request']['user']['login'],
         "action": "PULL_REQUEST",
         "from_branch": request_json['head']['label'].split(':')[-1],
@@ -52,7 +52,7 @@ def get_pull_action_object():
 def get_merge_action_object():
     request_json = request.get_json()
     object = {
-        "request_id": request_json['id'],
+        "request_id": request_json['pull_request']['id'],
         "author": request_json['pull_request']['merged_by']['login'],
         "action": "MERGE",
         "from_branch": request_json['head']['label'].split(':')[-1],
