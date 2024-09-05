@@ -11,7 +11,9 @@ def ping():
 
 @webhook.route('/receiver', methods=["POST"])
 def receiver():
-    print(request)
+    event_type = request.headers.get('X-GitHub-Event')
+    print(event_type)
+    
     request_json = request.get_json()
     mongo.db.webhooks.insert_one(request_json)
     return {}, 200
