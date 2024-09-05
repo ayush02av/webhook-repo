@@ -15,10 +15,6 @@ def receiver():
     action_object = get_action_object()
     mongo.db.action.insert_one(action_object)
 
-    # TODO: remove debug statements
-    mongo.db.webhook.insert_one({
-        "event": request.headers.get('X-GitHub-Event'),
-        "payload": request.get_json()
-    })
-    
-    return {}, 200
+    return {
+        "action_recorded": action_object['action']
+    }, 200
