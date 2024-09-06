@@ -86,21 +86,26 @@
         const tbody = document.getElementById("tbody");
 
         function setActions() {
+            // Function to load actions and render on screen
+
+            // fetch the action-logs from API
             axios.get("/api")
                 .then(function ({ data }) {
+                    // clear the previous logs
                     tbody.innerHTML = "";
+                    // render newly fetched logs
                     data.actions.forEach(function (action) {
                         const actionBody = document.createElement("tr");
                         const actionDescription = document.createElement("td");
 
                         if (action.action == "PUSH")
-                            actionDescription.innerText = `"${action.author}" pushed to "${action.to_branch}" on ${action.timestamp}`;
+                            actionDescription.innerText = `"${action.author}" pushed to "${action.to_branch}" on ${action.timestamp_min}`;
 
                         else if (action.action == "PULL_REQUEST")
-                            actionDescription.innerText = `"${action.author}" submitted a pull request from "${action.from_branch}" to "${action.to_branch}" on ${action.timestamp}`;
+                            actionDescription.innerText = `"${action.author}" submitted a pull request from "${action.from_branch}" to "${action.to_branch}" on ${action.timestamp_min}`;
 
                         else
-                            actionDescription.innerText = `"${action.author}" merged branch "${action.from_branch}" to "${action.to_branch}" on ${action.timestamp}`;
+                            actionDescription.innerText = `"${action.author}" merged branch "${action.from_branch}" to "${action.to_branch}" on ${action.timestamp_min}`;
 
                         actionBody.appendChild(actionDescription);
                         tbody.appendChild(actionBody);
@@ -110,7 +115,10 @@
                     console.log(error)
                 })
         }
+
+        // load actions on window load
         window.onload = setActions;
+        // reload actions every 15 seconds
         setInterval(setActions, 15 * 1000);
     </script>
 
