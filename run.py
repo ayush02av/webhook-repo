@@ -11,5 +11,6 @@ if __name__ == '__main__':
     mongo.init_app(app, os.getenv("MONGODB_URI"))
     app.run(
         host= "0.0.0.0",
-        port= os.getenv("PORT", 8000)
+        port= os.getenv("PORT", 8000),
+        debug=True,
     )

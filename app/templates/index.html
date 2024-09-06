@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Action Log</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            font-size: 16px;
+            color: #333;
+        }
+
+        @media (max-width: 600px) {
+
+            th,
+            td {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Action Log</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"
+        integrity="sha512-DdX/YwF5e41Ok+AI81HI8f5/5UsoxCVT9GKYZRIzpLxb8Twz4ZwPPX+jQMwMhNQ9b5+zDEefc+dcvQoPWGNZ3g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        const tbody = document.getElementById("tbody");
+
+        function setActions() {
+            axios.get("/api")
+                .then(function ({ data }) {
+                    tbody.innerHTML = "";
+                    data.actions.forEach(function (action) {
+                        const actionBody = document.createElement("tr");
+                        const actionDescription = document.createElement("td");
+
+                        if (action.action == "PUSH")
+                            actionDescription.innerText = `"${action.author}" pushed to "${action.to_branch}" on ${action.timestamp}`;
+
+                        else if (action.action == "PULL_REQUEST")
+                            actionDescription.innerText = `"${action.author}" submitted a pull request from "${action.from_branch}" to "${action.to_branch}" on ${action.timestamp}`;
+
+                        else
+                            actionDescription.innerText = `"${action.author}" merged branch "${action.from_branch}" to "${action.to_branch}" on ${action.timestamp}`;
+
+                        actionBody.appendChild(actionDescription);
+                        tbody.appendChild(actionBody);
+                    })
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        }
+        window.onload = setActions;
+        setInterval(setActions, 15 * 1000);
+    </script>
+
+</body>
+
+</html>
